@@ -3,38 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido a la Versión 2</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Consulta de DNI</title>
     <style>
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
-        .animate-fadeInUp {
-            animation: fadeInUp 1s ease-out;
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
         }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .animate-spin {
-            animation: spin 1s linear infinite;
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .results {
+            margin-top: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+        }
+        
+        .error {
+            color: #e74c3c;
+            padding: 10px;
+            background-color: #fadbd8;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 14px;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-teal-100 to-blue-200 min-h-screen flex items-center justify-center p-4">
-    <div id="content" class="text-center p-8 bg-white rounded-lg shadow-md opacity-0">
-        <h1 class="text-3xl font-semibold mb-4 text-teal-700">
-            Bienvenido!
-        </h1>
-        <p class="text-lg text-gray-600 mb-6">
+<body>
+    <div class="container">
+        <header>
+            <h1>Consulta de DNI</h1>
+            <p>Sistema de verificación de datos personales</p>
+        </header>
+        
+        <form class="search-form" id="searchForm">
+            <div class="form-group">
+                <label for="dni">Número de DNI:</label>
+                <input type="text" id="dni" name="dni" placeholder="Ingrese su número de DNI" required>
+            </div>
+            <button type="submit">Consultar</button>
+        </form>
+        
+        <div class="results" id="results">
+            <!-- Los resultados se mostrarán aquí -->
+        </div>
+        
+        <footer>
+            <p>Sistema seguro - Todos los derechos reservados</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const dni = document.getElementById('dni').value.trim();
+            const resultsDiv = document.getElementById('results');
+            
+            // Validación básica
+            if (!dni) {
+                resultsDiv.innerHTML = '<div class="error">Por favor, ingrese un número de DNI válido.</div>';
+                return;
+            }
+            
+            // Mostrar carga
+            resultsDiv.innerHTML = '<div class="loading">Buscando información...</div>';
+            
+            // Simular consulta a servidor (en un caso real, sería una petición AJAX)
+            setTimeout(() => {
+                // Datos de ejemplo (simulados)
+                const sampleData = [
+                    {
+                        dni: dni,
+                        apellidos: 'GARCÍA PÉREZ',
+                        nombres: 'MARÍA JOSÉ',
+                        sede: 'LIMA CENTRO',
+                        mesa: '15'
+                    },
+                    {
+                        dni: dni,
+                        apellidos: 'LÓPEZ MARTÍNEZ',
+                        nombres: 'JUAN CARLOS',
+                        sede: 'LIMA NORTE',
+                        mesa: '22'
+                    }
+                ];
+                
+                // Filtrar por DNI (en este caso simulado, siempre devuelve datos)
+                const filteredData = sampleData.filter(item => item.dni === dni);
+                
+                if (filteredData.length > 0) {
+                    let tableHTML = `
+                        <h2>Resultados de la búsqueda</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>DNI</th>
+                                    <th>APELLIDOS</th>
+                                    <th>NOMBRES</th>
+                                    <th>SEDE</th>
+                                    <th>MESA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    
+                    filteredData.forEach(item => {
+                        tableHTML += `
+                            <tr>
+                                <td>${item.dni}</td>
+                                <td>${item.apellidos}</td>
+                                <td>${item.nombres}</td>
+                                <td>${item.sede}</td>
+                                <td>${item.mesa}</td>
+                            </tr>
+                        `;
+                    });
+                    
+                    tableHTML += `
+                            </tbody>
+                        </table>
+                    `;
+                    
+                    resultsDiv.innerHTML = tableHTML;
+                } else {
+                    resultsDiv.innerHTML = '<div class="no-results">No se encontraron resultados para el DNI proporcionado.</div>';
+                }
+            }, 1000); // Simular tiempo de respuesta del servidor
+        });
+        
+        // Manejar parámetros de URL (como en el ejemplo: ?dni=NWB%20351)
+        const urlParams = new URLSearchParams(window.location.search);
+        const dniFromUrl = urlParams.get('dni');
+        
+        if (dniFromUrl) {
+            document.getElementById('dni').value = dniFromUrl;
+            document.getElementById('searchForm').dispatchEvent(new Event('submit'));
+        }
+    </script>
+</body>
+</html>        <p class="text-lg text-gray-600 mb-6">
             Se ha renovado la app para ofrecerte una mejor experiencia.
         </p>
         <button id="redirectButton" class="px-6 py-3 bg-teal-500 text-white font-medium rounded-full shadow-md hover:bg-teal-600 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-50">
